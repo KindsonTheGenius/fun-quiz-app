@@ -1,0 +1,10 @@
+<h3>Question {{receivedQuestion.question}}</h3>
+<hr>
+<p *ngFor="let option of receivedQuestion.options">
+  <input
+    type="radio"
+    (click)="setUserAnswer(option)"
+    value="{{option}}"
+    name="answer"> {{option}}
+</p>
+
