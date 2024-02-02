@@ -1,22 +1,25 @@
 <div class="container">
-  <div class="border" *ngIf="!quizStart">
-    Home Page
-    <button (click)="startQuiz()">Start</button>
+  <div class="border border-primary border-1 rounded text-center" *ngIf="!quizStart">
+    Once you are ready click on Begin
+    <p><button class="btn btn-primary btn-lg" (click)="startQuiz()">Begin</button></p>
   </div>
 
-  <div class="border" *ngIf="quizStart && !quizEnd">
-    Quiz is runing: Question {{currentIndex+1}} of {{questions.length}}
+  <div class="border border-primary border-1 rounded p-3" *ngIf="quizStart && !quizEnd">
+    Quiz is running: Question {{currentIndex+1}} of {{questions.length}}
     <app-question
       [receivedQuestion]="currentQuestion"
       (userAnswer)="receiveAnswer($event)"
-      (disable)="optionSelected($event)"
-    >
+      (disable)="optionSelected($event)">
     </app-question>
-    <button (click)="goNext()" [disabled]="disabled">Next</button>
+    <button class="btn btn-outline-primary" (click)="goNext()" [disabled]="disabled">Next</button>
   </div>
 
   <div class="border" *ngIf="quizEnd">
     Quiz has ended. Display Scoresheet.
     <button (click)="backHome()">Back to Home</button>
   </div>
+</div>
+<hr>
+<div class="text-center">
+ <button class="btn btn-warning" (click)="quitClicked()">Quit</button>
 </div>

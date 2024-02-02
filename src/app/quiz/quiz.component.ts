@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-quiz',
@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./quiz.component.scss']
 })
 export class QuizComponent implements OnInit {
+
+  @Output() gameQuited = new EventEmitter<boolean>()
 
   quizStart = false; // if the quiz should start
   quizEnd = false;   // if the quiz should end
@@ -74,7 +76,10 @@ export class QuizComponent implements OnInit {
   }
 
   optionSelected(disabled:boolean) {
-    console.log(disabled);
     this.disabled = disabled;
+  }
+
+  quitClicked() {
+    this.gameQuited.emit(true);
   }
 }

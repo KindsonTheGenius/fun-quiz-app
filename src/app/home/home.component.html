@@ -1,0 +1,27 @@
+
+<header style="margin-top: 5%">
+  <!-- Fixed navbar -->
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Fun Quiz App by Kindson!</a>
+    </div>
+  </nav>
+</header>
+
+<!-- Begin page content -->
+<main role="main" class="container">
+  <div *ngIf="!gotoStart || quit"  class="p-5 mb-4 bg-light rounded-3  text-center">
+    <h1 class="display-4">Welcome to the Fun Quiz App.</h1>
+    <p class="lead">If you are ready, click the button below to start!</p>
+    <img alt="page art" src="../../assets/img/quiz-overside-opengrah.jpg" height="50%" width="50%"/>
+    <hr class="my-4">
+    <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+    <p class="lead"> <button class="btn btn-primary btn-lg" role="button" (click)="start()">Go To Start</button></p>
+  </div>
+</main>
+
+<app-quiz  *ngIf="gotoStart && !quit"
+          (gameQuited)="quitNow($event)" >
+</app-quiz>
+
+
