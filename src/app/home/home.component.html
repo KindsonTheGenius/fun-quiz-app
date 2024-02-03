@@ -1,9 +1,24 @@
 
 <header style="margin-top: 5%">
   <!-- Fixed navbar -->
-  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">Fun Quiz App by Kindson!</a>
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary px-4">
+      <a class="navbar-brand" href="#">Kindson's Fun Quiz!</a>
+
+    <div class="collapse navbar-collapse container-fluid" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Manage Quiz </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="http://www.kindsonthegenius.com" target="_blank">About </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Help</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Provide a Feedback</a>
+        </li>
+      </ul>
     </div>
   </nav>
 </header>
@@ -15,13 +30,13 @@
     <p class="lead">If you are ready, click the button below to start!</p>
     <img alt="page art" src="../../assets/img/quiz-overside-opengrah.jpg" height="50%" width="50%"/>
     <hr class="my-4">
-    <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+    <p>I have create a collection of quizzes to help you sharpen your skill in problem solving skill.
+    Sure you'll enjoy it and please use the Feedback button to let me know if I need to improve something</p>
     <p class="lead"> <button class="btn btn-primary btn-lg" role="button" (click)="start()">Go To Start</button></p>
   </div>
 </main>
 
 <app-quiz  *ngIf="gotoStart && !quit"
-          (gameQuited)="quitNow($event)" >
+          (gameQuited)="quitNow()" >
 </app-quiz>
-
 

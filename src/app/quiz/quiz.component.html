@@ -1,25 +1,110 @@
 <div class="container">
   <div class="border border-primary border-1 rounded text-center" *ngIf="!quizStart">
+    <p><b>About this Quiz</b> <br>
+      This quiz consists of 10 questions with each having 4 options
+    </p>
+    <p><b>Instructions</b> <br>
+      Once you begin, the timer begins. You could move to previous or next question and you could end the quiz using
+      the End Quiz button. If you end the quiz, tne only attempted questions would be used for the final result computation
+      <br>
+      You can use the Quit button to quit the quiz at anytime.
+    </p>
+    <hr>
     Once you are ready click on Begin
-    <p><button class="btn btn-primary btn-lg" (click)="startQuiz()">Begin</button></p>
+    <p><button class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#confirmBegin">Begin</button></p>
   </div>
 
-  <div class="border border-primary border-1 rounded p-3" *ngIf="quizStart && !quizEnd">
-    Quiz is running: Question {{currentIndex+1}} of {{questions.length}}
+  <div class="border border-primary border-1 rounded p-3 w-75 m-auto" *ngIf="quizStart && !quizEnd">
+    <div class="d-flex justify-content-between">
+      <div> Quiz is running: Question {{currentIndex+1}} of {{questions.length}}</div>
+      <div> Elapsed Time: <b> {{curDate | date:'H:mm:ss'}}</b> </div>
+    </div>
     <app-question
       [receivedQuestion]="currentQuestion"
       (userAnswer)="receiveAnswer($event)"
-      (disable)="optionSelected($event)">
+      (disable)="optionSelected()">
     </app-question>
-    <button class="btn btn-outline-primary" (click)="goNext()" [disabled]="disabled">Next</button>
+    <div class="d-flex justify-content-start">
+      <button class="btn btn-outline-primary" (click)="goPrevious()" [disabled]="disablePreviousButton" >Previous</button>
+      <button class="btn btn-outline-primary ms-3" (click)="goNext()" [disabled]="disableNextButton">Next</button>
+      <button class="btn btn-outline-warning ms-3" data-bs-toggle="modal" data-bs-target="#confirmFinish" >Finish and Submit</button>
+    </div>
   </div>
 
-  <div class="border" *ngIf="quizEnd">
-    Quiz has ended. Display Scoresheet.
-    <button (click)="backHome()">Back to Home</button>
+  <div class="border border-primary border-1 rounded p-3" *ngIf="quizEnd">
+    Quiz has ended. Scoresheet is displayed below. <br>
+    <hr>
+    <div>
+      <ul class="list-group">
+        <li class="list-group-item">Total Questions: {{questions.length}}</li>
+        <li class="list-group-item">Correct Answers: {{questions.length - score}}</li>
+        <li class="list-group-item">Incorrect Answers:{{score}} </li>
+        <li class="list-group-item">Score: {{score / questions.length * 100 | number:'1.2-2'}}</li>
+      </ul>
+    </div>
+    <hr>
+    <button class="btn btn-outline-success" (click)="backHome()">Back to Home</button>
   </div>
+
 </div>
 <hr>
 <div class="text-center">
- <button class="btn btn-warning" (click)="quitClicked()">Quit</button>
+ <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#confirmQuit">Quit</button>
+</div>
+
+<!-- Confirm Begin Modal -->
+<div class="modal fade" id="confirmBegin" tabindex="-1" aria-labelledby="confirmBeginModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="confirmBeginLabel">Begin Quiz</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to start the quiz now? Click Begin Quiz
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" (click)="startQuiz()" data-bs-dismiss="modal" class="btn btn-primary">Begin Quiz</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm Quit Modal -->
+<div class="modal fade" id="confirmQuit" tabindex="-1" aria-labelledby="confirmQuitModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="confirmQuitLabel">Exit Quiz</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to terminate the quiz now? Click Exit Quiz
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" (click)="quitClicked()" data-bs-dismiss="modal" class="btn btn-danger">Exit Quiz</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm Finis Modal -->
+<div class="modal fade" id="confirmFinish" tabindex="-1" aria-labelledby="confirmFinishModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="confirmFinishLabel">Finish Quiz</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to finish and submit your answers now? Click I'm Done
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" (click)="finishQuiz()" data-bs-dismiss="modal" class="btn btn-danger">I'm Done</button>
+      </div>
+    </div>
+  </div>
 </div>

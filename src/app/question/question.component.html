@@ -1,10 +1,11 @@
-<h3>Question {{receivedQuestion.question}}</h3>
+<h3> Question {{receivedQuestion.id +  ': ' + receivedQuestion.question}}</h3>
 <hr>
-<p *ngFor="let option of receivedQuestion.options">
-  <input
+<p class="fw-bolder" *ngFor="let option of receivedQuestion.options">
+  <input aria-label="" #options
     type="radio"
     (click)="setUserAnswer(option)"
     value="{{option}}"
     name="answer"> {{option}}
+
 </p>
 

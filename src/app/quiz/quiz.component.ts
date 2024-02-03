@@ -1,4 +1,5 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {getQuestions} from '../../assets/questions'
 
 @Component({
   selector: 'app-quiz',
@@ -8,36 +9,26 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 export class QuizComponent implements OnInit {
 
   @Output() gameQuited = new EventEmitter<boolean>()
-
+  curDate = new Date();
   quizStart = false; // if the quiz should start
   quizEnd = false;   // if the quiz should end
   currentIndex = 0;  // index of the current question
   currentQuestion: any;  // current question item
   questions: any;  // list of questions
   userAnswer?: string; // user's answer, from child component
-  disabled?: boolean;   // if the Next button should be disabled
-  private score: number = 0;      // the user's score
+  disabled?: boolean; // if the Next button should be disabled
+  score: number = 0; // the user's score
+  //currentQuiz: {}
+  disableNextButton?: boolean = false;
+  disablePreviousButton?: boolean = true;
 
   constructor() { }
 
   ngOnInit(): void {
-    this.questions = [
-      {
-        question: 'What is your name?',
-        options: ['Kindson', 'Saffron', 'Othniel', 'Osondu'],
-        answer: 'Kindson'
-      },
-      {
-        question: 'Where do you Live?',
-        options: ['India', 'Hungary', 'USA', 'Nigeria'],
-        answer: 'Hungary'
-      },
-      {
-        question: 'Who is PM of India?',
-        options: ['Ghandi', 'Mordi', 'Gagan', 'Kumar'],
-        answer: 'Mordi'
-      }
-    ];
+    this.curDate = new Date(0, 0,0,0,0,0)
+    setInterval(() => this.numIncrement(), 1000)
+    this.questions = getQuestions();
+    console.log(this.questions);
   }
 
   startQuiz() {
@@ -47,8 +38,7 @@ export class QuizComponent implements OnInit {
   }
 
   backHome() {
-    this.quizStart = false;
-    this.quizEnd = false;
+    this.gameQuited.emit(true)
   }
 
   endQuiz() {
@@ -56,30 +46,56 @@ export class QuizComponent implements OnInit {
   }
 
   updateScore(){
-    if (this.userAnswer === this.questions[this.currentIndex]){
+    if (this.userAnswer === this.questions[this.currentIndex].answer){
       this.score++;
     }
   }
 
   goNext() {
-    this.disabled = true;
+    this.updateScore();
+    //this.disabled = true;
     this.currentIndex++;
     this.currentQuestion = this.questions[this.currentIndex];
 
-    if (this.currentIndex === this.questions.length) {
-      this.endQuiz();
-    }
+    this.disableNextButton = this.currentQuestion.id === this.questions.length;
+    this.disablePreviousButton = this.currentQuestion.id === 1
+
+  }
+
+  goPrevious() {
+    this.updateScore();
+    //this.disabled = true;
+    this.currentIndex--;
+    this.currentQuestion = this.questions[this.currentIndex];
+
+    this.disablePreviousButton = this.currentQuestion.id === 1;
+    this.disableNextButton = this.currentQuestion.id === this.questions.length;
   }
 
   receiveAnswer(receivedAnswer:string) {
     this.userAnswer = receivedAnswer;
+    this.currentQuestion.userAnswer = receivedAnswer;
   }
 
-  optionSelected(disabled:boolean) {
-    this.disabled = disabled;
+  optionSelected() {
+    //this.disabled = disabled;
   }
 
   quitClicked() {
     this.gameQuited.emit(true);
+  }
+
+  private numIncrement() {
+    this.curDate = this.addSeconds(this.curDate, 1)
+  }
+
+  addSeconds = (date: Date, seconds: number): Date => {
+    const result = new Date(date);
+    result.setSeconds(seconds + result.getSeconds());
+    return result;
+  };
+
+  finishQuiz() {
+    this.endQuiz();
   }
 }

@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 
 @Component({
   selector: 'app-question',
@@ -11,6 +11,9 @@ export class QuestionComponent implements OnInit {
   @Output() userAnswer = new EventEmitter<string>();
   @Output() disable = new EventEmitter<boolean>();
 
+  @ViewChild('options')
+  options!: ElementRef<any>;
+
   constructor() { }
 
   ngOnInit(): void {
@@ -20,5 +23,9 @@ export class QuestionComponent implements OnInit {
   setUserAnswer(option: string){
     this.userAnswer.emit(option);
     this.disable.emit(false);
+  }
+
+  clearSelection() {
+
   }
 }

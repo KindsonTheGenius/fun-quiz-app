@@ -9,7 +9,6 @@ export class HomeComponent implements OnInit {
 
   gotoStart = false
   quit = false;
-  gameQuited = false
 
   constructor() { }
 
@@ -20,8 +19,7 @@ export class HomeComponent implements OnInit {
     this.gotoStart = true
   }
 
-  quitNow(quit: boolean) {
+  quitNow() {
     this.gotoStart = false
-    console.log(quit)
   }
 }
